@@ -26,6 +26,23 @@
     </properties>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>integration-test</id>
+                            <goals>
+                                <goal>integration-test</goal>
+                                <goal>verify</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -42,10 +59,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
             </plugin>
 
             <plugin>
@@ -224,24 +237,6 @@
                 <my.arquillian.launch>weld</my.arquillian.launch>
             </properties>
             <build>
-                <pluginManagement>
-                    <plugins>
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-failsafe-plugin</artifactId>
-                            <configuration>
-                                <!--
-                                    only execute the weld-se supported test.
-                                 -->
-                                <includes>
-                                    <include>**/weldse/IT*.java</include>
-                                    <include>**/weldse/*IT.java</include>
-                                    <include>**/weldse/*ITCase.java</include>
-                                </includes>
-                            </configuration>
-                        </plugin>
-                    </plugins>
-                </pluginManagement>
                 <testResources>
                     <testResource>
                         <directory>src/test/resources</directory>
@@ -249,6 +244,7 @@
                     </testResource>
                     <testResource>
                         <directory>src/test/arq-resources/arq-weld-se</directory>
+                        <filtering>true</filtering>
                     </testResource>
                 </testResources>
             </build>
@@ -276,6 +272,34 @@
                 <my.arquillian.launch>payara</my.arquillian.launch>
             </properties>
             <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-dependency-plugin</artifactId>
+                            <executions>
+                                <execution>
+                                    <id>unpack-resources</id>
+                                    <phase>process-resources</phase>
+                                    <goals>
+                                        <goal>unpack</goal>
+                                    </goals>
+                                    <configuration>
+                                        <artifactItems>
+                                            <artifactItem>
+                                                <groupId>fish.payara.distributions</groupId>
+                                                <artifactId>payara-ml</artifactId>
+                                                <version>${my.payara.version}</version>
+                                                <type>zip</type>
+                                                <outputDirectory>${project.build.directory}/container</outputDirectory>
+                                            </artifactItem>
+                                        </artifactItems>
+                                    </configuration>
+                                </execution>
+                            </executions>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
                 <testResources>
                     <testResource>
                         <directory>src/test/resources</directory>
@@ -313,6 +337,7 @@
                     </testResource>
                     <testResource>
                         <directory>src/test/arq-resources/arq-payara-embedded</directory>
+                        <filtering>true</filtering>
                     </testResource>
                 </testResources>
             </build>
@@ -325,6 +350,81 @@
                 <dependency>
                     <groupId>fish.payara.arquillian</groupId>
                     <artifactId>arquillian-payara-server-embedded</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>arquillian-payara-micro</id>
+            <activation>
+                <property>
+                    <name>arq-mode</name>
+                    <value>payara-micro</value>
+                </property>
+            </activation>
+            <properties>
+                <my.arquillian.launch>payaramicro</my.arquillian.launch>
+                <my.payara.location>${project.build.directory}</my.payara.location>
+            </properties>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-dependency-plugin</artifactId>
+                            <executions>
+                                <execution>
+                                    <id>copy-payara-micro</id>
+                                    <phase>process-test-classes</phase>
+                                    <goals>
+                                        <goal>copy</goal>
+                                    </goals>
+                                    <configuration>
+                                        <artifactItems>
+                                            <artifactItem>
+                                                <groupId>fish.payara.extras</groupId>
+                                                <artifactId>payara-micro</artifactId>
+                                                <version>${my.payara.version}</version>
+                                                <overWrite>false</overWrite>
+                                                <outputDirectory>${my.payara.location}</outputDirectory>
+                                                <destFileName>payara-micro-${my.payara.version}.jar</destFileName>
+                                            </artifactItem>
+                                        </artifactItems>
+                                    </configuration>
+                                </execution>
+                                <execution>
+                                    <id>copy-test-dependencies</id>
+                                    <phase>process-test-classes</phase>
+                                    <goals>
+                                        <goal>copy-dependencies</goal>
+                                    </goals>
+                                    <configuration>
+                                        <includeScope>test</includeScope>
+                                        <outputDirectory>${my.payara.location}/libs</outputDirectory>
+                                        <overWriteReleases>false</overWriteReleases>
+                                        <overWriteSnapshots>false</overWriteSnapshots>
+                                        <overWriteIfNewer>true</overWriteIfNewer>
+                                    </configuration>
+                                </execution>
+                            </executions>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+                <testResources>
+                    <testResource>
+                        <directory>src/test/resources</directory>
+                        <filtering>true</filtering>
+                    </testResource>
+                    <testResource>
+                        <directory>src/test/arq-resources/arq-payara-micro</directory>
+                        <filtering>true</filtering>
+                    </testResource>
+                </testResources>
+            </build>
+            <dependencies>
+                <dependency>
+                    <groupId>fish.payara.arquillian</groupId>
+                    <artifactId>arquillian-payara-micro-managed</artifactId>
                     <scope>test</scope>
                 </dependency>
             </dependencies>

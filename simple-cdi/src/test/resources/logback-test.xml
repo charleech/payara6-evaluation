@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration>
+
+<configuration>
+    <import class="net.logstash.logback.encoder.LogstashEncoder"/>
+    <import class="net.logstash.logback.decorate.PrettyPrintingJsonGeneratorDecorator"/>
+    <import class="ch.qos.logback.classic.PatternLayout"/>
+    <import class="ch.qos.logback.core.encoder.LayoutWrappingEncoder"/>
+    <import class="net.logstash.logback.decorate.CompositeJsonGeneratorDecorator"/>
+    <import class="net.logstash.logback.mask.MaskingJsonGeneratorDecorator"/>
+    <import class="ch.qos.logback.core.ConsoleAppender"/>
+    <timestamp name="byDate" datePattern="yyyyMMdd"/>
+
+    <appender name="consoleAsText" class="ConsoleAppender">
+        <encoder class="LayoutWrappingEncoder">
+            <layout class="PatternLayout">
+                <pattern>%date{yyyy-MM-dd HH:mm:ss.SSS,Asia/Bangkok} [%thread] [%mdc] %-5level %-45logger{36} - %L %M %msg%n</pattern>
+            </layout>
+        </encoder>
+    </appender>
+
+    <appender name="consoleAsJSON" class="ConsoleAppender">
+        <encoder class="LogstashEncoder">
+            <includeCallerData>true</includeCallerData>
+            <jsonGeneratorDecorator class="CompositeJsonGeneratorDecorator">
+                <decorator class="PrettyPrintingJsonGeneratorDecorator"/>
+            </jsonGeneratorDecorator>
+        </encoder>
+    </appender>
+
+    <logger name="org.jboss.weld" level="warn"/>
+    <logger name="org.jboss.interceptor" level="warn"/>
+    <logger name="org.hibernate.validator" level="warn"/>
+    <logger name="liquibase" level="info"/>
+
+    <property name="app.package.name"
+              value="app.github.charlee.simple" />
+
+    <logger name="${app.package.name}"
+            level="trace"
+            additivity="false">
+        <appender-ref ref="consoleAsJSON"/>
+    </logger>
+    <logger name="test.${app.package.name}"
+            level="trace"
+            additivity="true">
+        <appender-ref ref="consoleAsJSON"/>
+    </logger>
+    <logger name="it.test.${app.package.name}"
+            level="trace"
+            additivity="false">
+        <appender-ref ref="consoleAsJSON"/>
+    </logger>
+
+    <root level="info">
+        <appender-ref ref="consoleAsText"/>
+    </root>
+</configuration>
