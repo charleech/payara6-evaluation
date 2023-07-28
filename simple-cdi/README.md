@@ -1,4 +1,4 @@
-# The Config evaluation
+# The Simeple CDI demonstration
 
 ## How to build
 
