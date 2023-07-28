@@ -10,11 +10,11 @@
         <configuration>
             <property name="bindHttpPort">8080</property>
             <property name="bindHttpsPort">8181</property>
-            <property name="installRoot">target/container/payara6/glassfish</property>
+            <!--property name="installRoot">target/container/payara6/glassfish</property>
             <property name="instanceRoot">target/container/payara6/glassfish/domains/domain1</property>
             <property name="resourcesXml">
                 src/test/resources/arquillian/gf/payara-resources.xml
-            </property>
+            </property-->
         </configuration>
         <protocol type="Servlet 5.0">
             <property name="host">localhost</property>
