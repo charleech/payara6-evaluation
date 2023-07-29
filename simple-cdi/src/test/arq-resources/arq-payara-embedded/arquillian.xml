@@ -15,6 +15,7 @@
             <property name="resourcesXml">
                 src/test/resources/arquillian/gf/payara-resources.xml
             </property-->
+            <property name="cleanup">false</property>
         </configuration>
         <protocol type="Servlet 5.0">
             <property name="host">localhost</property>
