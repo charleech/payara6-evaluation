@@ -37,7 +37,7 @@ export JAVA_TOOL_OPTIONS="-Djdk.util.zip.disableZip64ExtraFieldValidation=true \
 --add-opens=java.base/sun.net.www.protocol.jar=ALL-UNNAMED \
 --add-opens=java.base/java.net=ALL-UNNAMED \
 --add-opens=java.naming/javax.naming.spi=ALL-UNNAMED \
---add-opens=java.base/java.lang=ALL-UNNAMED \"
+--add-opens=java.base/java.lang=ALL-UNNAMED"
 
 mvn clean install -Darq-mode=payara-embedded -am
 ```
