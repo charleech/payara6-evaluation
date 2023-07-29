@@ -20,7 +20,6 @@ import jakarta.inject.Inject;
  * @version 1.0.0
  * @since 1.0.0
  */
-
 @IntegrationTestExtension
 @DisplayName(
     "GreeterIT Integration Test"
