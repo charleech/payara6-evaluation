@@ -15,7 +15,7 @@
             <property name="extraMicroOptions">
                 --contextroot /
                 --addLibs target/libs
-                --logproperties src/test/resources/logging.properties
+                --logproperties src/test/resources/micro-logging.properties
             </property>
         </configuration>
         <protocol type="Servlet 3.0">
