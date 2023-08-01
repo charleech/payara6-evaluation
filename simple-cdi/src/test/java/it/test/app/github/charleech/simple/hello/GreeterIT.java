@@ -2,9 +2,8 @@ package it.test.app.github.charleech.simple.hello;
 
 import org.assertj.core.api.BDDAssertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import app.github.charleech.simple.hello.Greetable;
 import it.test.app.github.charleech.simple.IntegrationTestExtension;
@@ -33,13 +32,14 @@ class GreeterIT {
      */
     @Inject
     private Greetable greeter;
+
     /**
-     * This is a success test case when mocking the closed inputstream.
+     * This is a success test case when greeting.
      *
      * @since 1.0.0
      */
     @Test
-    @Execution(ExecutionMode.CONCURRENT)
+    @Order(1)
     @DisplayName(
         "When greeting by Jakarta EE should be success."
     )
@@ -50,6 +50,31 @@ class GreeterIT {
         expected = "Hello JUnit";
 
         actual   = this.greeter.greet("JUnit");
+
+        BDDAssertions.then(actual).
+            as("The greeting must be valid.").
+            isNotNull().
+            isNotEmpty().
+            isEqualTo(expected);
+    }
+
+    /**
+     * This is a failure test case when greeting.
+     *
+     * @since 1.0.0
+     */
+    @Test
+    @Order(2)
+    @DisplayName(
+        "When greeting as failure by Jakarta EE should be failed."
+    )
+    void whenGreetAsFailure() {
+        String expected = null;
+        String actual   = null;
+
+        expected = "Hello JUnit";
+
+        actual   = this.greeter.greet("UNKNOWN");
 
         BDDAssertions.then(actual).
             as("The greeting must be valid.").
