@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import app.github.charleech.simple.hello.Greetable;
 import it.test.app.github.charleech.simple.IntegrationTestExtension;
 import jakarta.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <p>
@@ -23,6 +24,7 @@ import jakarta.inject.Inject;
 @DisplayName(
     "GreeterIT Integration Test"
 )
+@Slf4j
 class GreeterIT {
 
     /**
@@ -50,7 +52,8 @@ class GreeterIT {
         expected = "Hello JUnit";
 
         actual   = this.greeter.greet("JUnit");
-
+GreeterIT.log.error("===> 001");
+System.out.println("\r\n\r\n====> 001");
         BDDAssertions.then(actual).
             as("The greeting must be valid.").
             isNotNull().
@@ -75,7 +78,8 @@ class GreeterIT {
         expected = "Hello JUnit";
 
         actual   = this.greeter.greet("UNKNOWN");
-
+GreeterIT.log.error("===> 002");
+System.out.println("\r\n\r\n====> 002");
         BDDAssertions.then(actual).
             as("The greeting must be valid.").
             isNotNull().

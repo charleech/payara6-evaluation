@@ -34,7 +34,7 @@
     <logger name="liquibase" level="info"/>
 
     <property name="app.package.name"
-              value="app.github.charlee.simple" />
+              value="app.github.charleech.simple" />
 
     <logger name="${app.package.name}"
             level="trace"
