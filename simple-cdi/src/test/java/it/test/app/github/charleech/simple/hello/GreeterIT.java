@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import app.github.charleech.simple.hello.Greetable;
 import it.test.app.github.charleech.simple.IntegrationTestExtension;
 import jakarta.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <p>
@@ -23,6 +24,7 @@ import jakarta.inject.Inject;
 @DisplayName(
     "GreeterIT Integration Test"
 )
+@Slf4j
 class GreeterIT {
 
     /**
@@ -46,6 +48,8 @@ class GreeterIT {
     void whenGreet() {
         String expected = null;
         String actual   = null;
+
+        GreeterIT.log.info("===> whenGreet");
 
         expected = "Hello JUnit";
 
@@ -71,6 +75,8 @@ class GreeterIT {
     void whenGreetAsFailure() {
         String expected = null;
         String actual   = null;
+
+        GreeterIT.log.info("===> whenGreetAsFailure");
 
         expected = "Hello JUnit";
 

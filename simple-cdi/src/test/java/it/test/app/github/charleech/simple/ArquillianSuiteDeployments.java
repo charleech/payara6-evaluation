@@ -1,12 +1,17 @@
 package it.test.app.github.charleech.simple;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 
 import org.eu.ingwar.tools.arquillian.extension.suite.annotations.ArquillianSuiteDeployment;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 
 /**
  * <p>
@@ -48,7 +53,65 @@ public class ArquillianSuiteDeployments {
         addAsWebInfResource(
             EmptyAsset.INSTANCE,
             "beans.xml"
+        ).
+        addAsLibraries(
+            ArquillianSuiteDeployments.getDependencies()
         );
     }
 
+    /**
+     * Get required dependencies as file.
+     *
+     * @return The files
+     * @since 1.0.0
+     */
+    protected static File[] getDependencies() {
+        return Maven.resolver().
+               resolve(ArquillianSuiteDeployments.getGAVs()).
+               withTransitivity().
+               asFile();
+    }
+
+    /**
+     * Get required dependencies as Maven Coordinates.
+     *
+     * @return The Maven Coordinates
+     * @since 1.0.0
+     */
+    private static String[] getGAVs() {
+        List<String> gavs;
+
+        gavs = new ArrayList<>();
+
+        ArquillianSuiteDeployments.readDependenciesProps().entrySet().forEach(
+            e -> gavs.add(String.valueOf(e.getValue()))
+        );
+
+        return gavs.toArray(new String[]{});
+    }
+
+    /**
+     * Get required dependencies from properties.
+     *
+     * @return The loaded properties
+     * @since 1.0.0
+     */
+    private static Properties readDependenciesProps() {
+        Properties props = null;
+
+        try {
+            props = new Properties();
+            props.load(
+                ArquillianSuiteDeployments.class.getResourceAsStream(
+                    "/dependencies.properties"
+                )
+            );
+            return props;
+        } catch (final IOException e) {
+            throw new IllegalStateException(
+                "Cannot load properties.",
+                e
+            );
+        }
+    }
 }

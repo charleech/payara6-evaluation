@@ -9,11 +9,13 @@
     <container default="true" qualifier="payaramicro">
         <configuration>
             <property name="microJar">${my.payara.location}/payara-micro-${my.payara.version}.jar</property>
-            <!--property name="cmdOptions">
+            <property name="cmdOptions">
                 -Dlogback.configurationFile=src/test/resources/logback-test.xml
-            </property-->
+            </property>
             <property name="extraMicroOptions">
                 --contextroot /
+                --addLibs target/libs
+                --logproperties src/test/resources/micro-logging.properties
             </property>
         </configuration>
         <protocol type="Servlet 3.0">

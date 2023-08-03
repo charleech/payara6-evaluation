@@ -1,6 +1,7 @@
 package app.github.charleech.simple.hello;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <p>
@@ -13,6 +14,7 @@ import jakarta.enterprise.context.ApplicationScoped;
  * @since 1.0.0
  */
 @ApplicationScoped
+@Slf4j
 public class Greeter implements Greetable {
 
     /**
@@ -24,6 +26,7 @@ public class Greeter implements Greetable {
 
     @Override
     public String greet(final String name) {
+        Greeter.log.info("====> CDI 001");
         return "Hello " + name;
     }
 
