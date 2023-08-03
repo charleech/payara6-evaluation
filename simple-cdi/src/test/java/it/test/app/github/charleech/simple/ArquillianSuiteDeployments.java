@@ -54,7 +54,9 @@ public class ArquillianSuiteDeployments {
             EmptyAsset.INSTANCE,
             "beans.xml"
         ).
-        addAsLibraries(ArquillianSuiteDeployments.getDependencies());
+        addAsLibraries(
+            ArquillianSuiteDeployments.getDependencies()
+        );
     }
 
     /**
