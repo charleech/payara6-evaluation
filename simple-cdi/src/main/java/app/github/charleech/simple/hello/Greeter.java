@@ -26,8 +26,7 @@ public class Greeter implements Greetable {
 
     @Override
     public String greet(final String name) {
-        Greeter.log.error("====> CDI 001");
-        System.out.println("====> CDI 001");
+        Greeter.log.info("====> CDI 001");
         return "Hello " + name;
     }
 

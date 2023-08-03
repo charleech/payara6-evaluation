@@ -49,11 +49,12 @@ class GreeterIT {
         String expected = null;
         String actual   = null;
 
+        GreeterIT.log.info("===> whenGreet");
+
         expected = "Hello JUnit";
 
         actual   = this.greeter.greet("JUnit");
-GreeterIT.log.error("===> 001");
-System.out.println("\r\n\r\n====> 001");
+
         BDDAssertions.then(actual).
             as("The greeting must be valid.").
             isNotNull().
@@ -75,11 +76,12 @@ System.out.println("\r\n\r\n====> 001");
         String expected = null;
         String actual   = null;
 
+        GreeterIT.log.info("===> whenGreetAsFailure");
+
         expected = "Hello JUnit";
 
         actual   = this.greeter.greet("UNKNOWN");
-GreeterIT.log.error("===> 002");
-System.out.println("\r\n\r\n====> 002");
+
         BDDAssertions.then(actual).
             as("The greeting must be valid.").
             isNotNull().

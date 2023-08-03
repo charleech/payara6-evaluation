@@ -35,10 +35,10 @@ import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension;
     ElementType.METHOD
 })
 @ExtendWith({
-    JulResetterExtension.class,
-    SystemStubsExtension.class,
+    // JulResetterExtension.class,
+    // SystemStubsExtension.class,
     ArquillianExtension.class,
-    MockitoExtension.class
+    // MockitoExtension.class
 })
 @MockitoSettings(strictness = Strictness.LENIENT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
